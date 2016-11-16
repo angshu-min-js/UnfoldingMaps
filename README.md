@@ -18,3 +18,7 @@ Get excited and make things!
 # Module 1
 **Implementation of two maps**
 ![] (./module1.JPG)
+
+# Module 2/3
+**Putting Data on a Map**
+![] (./module3.JPG)

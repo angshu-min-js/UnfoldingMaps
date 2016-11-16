@@ -24,7 +24,7 @@ import parsing.ParseFeed;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
+ * @author Angshuman Gupta
  * Date: July 17, 2015
  * */
 public class EarthquakeCityMap extends PApplet {
@@ -33,7 +33,7 @@ public class EarthquakeCityMap extends PApplet {
 	private static final long serialVersionUID = 1L;
 
 	// IF YOU ARE WORKING OFFLINE, change the value of this variable to true
-	private static final boolean offline = false;
+	private static final boolean offline = true;
 	
 	// Less than this threshold is a light earthquake
 	public static final float THRESHOLD_MODERATE = 5;
@@ -88,6 +88,12 @@ public class EarthquakeCityMap extends PApplet {
 	    int yellow = color(255, 255, 0);
 	    
 	    //TODO: Add code here as appropriate
+	    for (PointFeature feature : earthquakes){
+	    	SimplePointMarker marker = createMarker(feature);
+	    	markers.add(marker);
+	    	map.addMarker(marker);
+	    	
+	    }
 	}
 		
 	// A suggested helper method that takes in an earthquake feature and 
@@ -96,7 +102,23 @@ public class EarthquakeCityMap extends PApplet {
 	private SimplePointMarker createMarker(PointFeature feature)
 	{
 		// finish implementing and use this method, if it helps.
-		return new SimplePointMarker(feature.getLocation());
+		SimplePointMarker  simplePointMarker = new SimplePointMarker(feature.getLocation());
+		Object magObj = feature.getProperty("magnitude");
+		float mag = Float.parseFloat(magObj.toString());
+		if(mag<4){
+			simplePointMarker.setColor(color(0,0,255));
+			simplePointMarker.setRadius(4);
+		}
+		else if(mag<=4.9){
+			simplePointMarker.setColor(color(0,255,0));
+			simplePointMarker.setRadius(8);
+		}
+		else{
+			simplePointMarker.setColor(color(255,0,0));
+			simplePointMarker.setRadius(12);
+		}
+		return simplePointMarker;
+		
 	}
 	
 	public void draw() {
@@ -111,6 +133,33 @@ public class EarthquakeCityMap extends PApplet {
 	private void addKey() 
 	{	
 		// Remember you can use Processing's graphics methods here
+		// Rectange
+		fill(255);
+		rect(10, 20, 150, 200);
+		
+		// legends
+		textSize(12);
+		fill(10);
+		text("Earthquake Keys", 15, 40);
+		
+		fill(255, 0, 0);
+		ellipse(30, 100, 15, 15);
+		textSize(12);
+		fill(10);
+		text("5.0+ Magnitude", 40, 105);
+		
+		fill(0, 255, 0);
+		ellipse(30, 140, 15, 15);
+		textSize(12);
+		fill(10);
+		text("4.0+ Magnitude", 40, 145);
+		
+		fill(0, 0, 255);
+		ellipse(30, 180, 15, 15);
+		textSize(12);
+		fill(10);
+		text("Below 4.0", 40, 185);
+		
 	
 	}
 }

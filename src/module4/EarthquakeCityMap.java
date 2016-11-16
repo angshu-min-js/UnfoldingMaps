@@ -20,7 +20,7 @@ import processing.core.PApplet;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
+ * @author Angshuman Gupta
  * Date: July 17, 2015
  * */
 public class EarthquakeCityMap extends PApplet {
@@ -35,7 +35,7 @@ public class EarthquakeCityMap extends PApplet {
 	private static final long serialVersionUID = 1L;
 
 	// IF YOU ARE WORKING OFFILINE, change the value of this variable to true
-	private static final boolean offline = false;
+	private static final boolean offline = true;
 	
 	/** This is where to find the local tiles, for working without an Internet connection */
 	public static String mbTilesString = "blankLight-1-3.mbtiles";
@@ -57,6 +57,7 @@ public class EarthquakeCityMap extends PApplet {
 	// Markers for each earthquake
 	private List<Marker> quakeMarkers;
 
+	private List<PointFeature> earthquakes;
 	// A List of country markers
 	private List<Marker> countryMarkers;
 	
@@ -76,7 +77,7 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
-		//earthquakesURL = "test1.atom";
+		earthquakesURL = "test1.atom";
 		//earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
@@ -134,24 +135,40 @@ public class EarthquakeCityMap extends PApplet {
 	private void addKey() {	
 		// Remember you can use Processing's graphics methods here
 		fill(255, 250, 240);
-		rect(25, 50, 150, 250);
-		
+		rect(25, 50, 155, 250);
+
 		fill(0);
 		textAlign(LEFT, CENTER);
 		textSize(12);
-		text("Earthquake Key", 50, 75);
-		
+		text("Earthquake Key", 45, 75);
+
 		fill(color(255, 0, 0));
-		ellipse(50, 125, 15, 15);
+		triangle(50, 100 - 5, 50 - 5, 100 + 5, 50 + 5, 100 + 5);
+		fill(color(255, 255, 255));
+		ellipse(50, 120, 10, 10);
+		rect(45, 135, 10, 10);
+
+		
 		fill(color(255, 255, 0));
-		ellipse(50, 175, 10, 10);
+		ellipse(50, 200, 9, 9);
 		fill(color(0, 0, 255));
-		ellipse(50, 225, 5, 5);
+		ellipse(50, 220, 9, 9);
+		fill(color(255, 0, 0));
+		ellipse(50, 240, 9, 9);
+		fill(color(255, 255, 255));
+		ellipse(50, 260, 9, 9);
+		line(50 - 5, 260 - 5, 50 + 5, 260 + 5);
+		line(50 + 5, 260 - 5, 50 - 5, 260 + 5);
 		
 		fill(0, 0, 0);
-		text("5.0+ Magnitude", 75, 125);
-		text("4.0+ Magnitude", 75, 175);
-		text("Below 4.0", 75, 225);
+		text("City Marker", 75, 100);
+		text("Land Quake", 75, 120);
+		text("Ocean Quake", 75, 140);
+		text("Size ~ Magnitude", 45, 160);
+		text("Shallow", 75, 200);
+		text("Intermediate", 75, 220);
+		text("Deep", 75, 240);
+		text("Past hour", 75, 260);
 	}
 
 	
@@ -165,7 +182,10 @@ public class EarthquakeCityMap extends PApplet {
 		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
 		
 		// TODO: Implement this method using the helper method isInCountry
-		
+		for (Marker country: countryMarkers){
+			if(isInCountry(earthquake, country))
+				return true;
+		}
 		// not inside any country
 		return false;
 	}
@@ -178,7 +198,18 @@ public class EarthquakeCityMap extends PApplet {
 	// And LandQuakeMarkers have a "country" property set.
 	private void printQuakes() 
 	{
+		int nQuakes;
 		// TODO: Implement this method
+		for (Marker country: countryMarkers){
+			nQuakes = 0;
+			for (PointFeature feature : earthquakes){
+				if(isInCountry(feature, country))
+					nQuakes++;
+			System.out.println("Country: " + country.getStringProperty("name") + ", number of quakes: " + nQuakes);
+			nQuakes = 0;
+			}
+			
+		}
 	}
 	
 	

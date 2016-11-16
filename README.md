@@ -10,3 +10,7 @@ This is an interactive map uses a live RSS feed from the U.S. Geological Survey 
 # Module 2/3
 **Putting Data on a Map**
 ![] (./module3.JPG)
+
+# Module 4
+**Customizing Markers**
+![] (./module4.JPG)
